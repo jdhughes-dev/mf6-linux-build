@@ -25,6 +25,7 @@ jobs:
       - name: what's there
         run: |
           ls -lh
+          which gcc
           which gfortran
 
       - name: build modflow6
