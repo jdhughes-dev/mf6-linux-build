@@ -1,0 +1,28 @@
+name: hbb-build
+
+on: 
+  schedule:
+    - cron: '0 8 * * *' # run at 8 AM UTC (12 am PST)
+  push:
+  pull_request:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: foobarwidget/holy-build-box-amd6 # Specify the Docker image
+    steps:
+      - name: Run a command inside the container
+        run: echo "Hello from inside the container!"
+
+      - name: clone modflow6 repo
+        run: git clone https://github.com/MODFLOW-ORG/modflow6.git
+
+      - name: build modflow6
+        run: |
+          cd modflow6/make
+          make
+
+    
