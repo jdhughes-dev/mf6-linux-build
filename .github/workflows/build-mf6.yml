@@ -19,7 +19,7 @@ jobs:
 
       - name: get modflow6 repo
         run: |
-          wget https://github.com/MODFLOW-ORG/modflow6/archive/refs/heads/develop.zip
+          curl https://github.com/MODFLOW-ORG/modflow6/archive/refs/heads/develop.zip
           ls -lh
 
       - name: build modflow6
