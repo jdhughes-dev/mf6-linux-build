@@ -23,8 +23,10 @@ jobs:
           unzip mf6.zip
 
       - name: what's there
-        run: ls -lh
-        
+        run: |
+          ls -lh
+          which gfortran
+
       - name: build modflow6
         run: |
           cd modflow6-develop/make
