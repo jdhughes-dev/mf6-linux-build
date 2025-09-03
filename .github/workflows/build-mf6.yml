@@ -21,11 +21,14 @@ jobs:
         run: |
           curl -L -o mf6.zip https://github.com/MODFLOW-ORG/modflow6/archive/refs/heads/develop.zip
           unzip mf6.zip
-          ls -lh
 
       - name: build modflow6
         run: |
-          cd modflow6/make
-          make
+          cd modflow6-develop/make
+          make clean
+          make 
 
-    
+      - name: save modflow6
+        run: |
+          cd modflow6-develop/bin
+          ls -lh
