@@ -12,7 +12,7 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: foobarwidget/holy-build-box-amd6 # Specify the Docker image
+    container: phusion/holy-build-box-64:latest # Specify the Docker image
     steps:
       - name: Run a command inside the container
         run: echo "Hello from inside the container!"
