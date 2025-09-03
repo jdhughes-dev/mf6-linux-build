@@ -17,6 +17,10 @@ jobs:
       - name: Run a command inside the container
         run: echo "Hello from inside the container!"
 
+      - name: Install additional dependencies
+        run: |
+          yum install -y git
+
       - name: get modflow6 repo
         run: |
           curl -L -o mf6.zip https://github.com/MODFLOW-ORG/modflow6/archive/refs/heads/develop.zip
