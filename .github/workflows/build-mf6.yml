@@ -17,13 +17,10 @@ jobs:
       - name: Run a command inside the container
         run: echo "Hello from inside the container!"
 
-      - name: Install packages
+      - name: get modflow6 repo
         run: |
-          FROM ubuntu:latest
-          RUN apt-get update && apt-get install -y git
-
-      - name: clone modflow6 repo
-        run: git clone https://github.com/MODFLOW-ORG/modflow6.git
+          wget https://github.com/MODFLOW-ORG/modflow6/archive/refs/heads/develop.zip
+          ls -lh
 
       - name: build modflow6
         run: |
