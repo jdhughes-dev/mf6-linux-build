@@ -18,7 +18,9 @@ jobs:
         run: echo "Hello from inside the container!"
 
       - name: Install packages
-        run: apt install git
+        run: |
+          FROM ubuntu:latest
+          RUN apt-get update && apt-get install -y git
 
       - name: clone modflow6 repo
         run: git clone https://github.com/MODFLOW-ORG/modflow6.git
