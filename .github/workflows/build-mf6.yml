@@ -11,6 +11,7 @@ concurrency:
 
 jobs:
   build_docker:
+    name: Build docker container with gfortran
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -34,6 +35,9 @@ jobs:
 
 
   build:
+    name: build MODFLOW 6 in the container
+    needs:
+      - build_docker
     runs-on: ubuntu-latest
     container: phusion/holy-build-box-64:latest # Specify the Docker image
     steps:
