@@ -29,9 +29,13 @@ jobs:
           ls -lh
           which gcc
           which gfortran
+          gcc --version
+          gfortran --version
 
       - name: build modflow6
         run: |
+          export CC="/usr/bin/gcc"
+          export FC="/usr/bin/gfortran"
           cd modflow6/make
           make clean
           make 
