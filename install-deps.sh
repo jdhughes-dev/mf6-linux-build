@@ -11,6 +11,9 @@ yum install -y gcc-gfortran
 yum install -y centos-release-scl
 yum install -y devtoolset-10
 
+yum -y groupinstall "Development Tools"
+yum install -y openssl-devel bzip2-devel libffi-devel zlib-devel wget
+
 wget https://www.python.org/ftp/python/3.13.7/Python-3.13.7.tgz
 tar xzf Python-3.13.7.tgz
 cd Python-3.13.7
