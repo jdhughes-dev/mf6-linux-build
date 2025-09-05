@@ -10,5 +10,3 @@ yum install -y git
 yum install -y gcc-gfortran
 yum install -y centos-release-scl
 yum install -y devtoolset-10
-
-echo 'source /opt/rh/devtoolset-10/enable' >> ~/.bashrc

@@ -19,7 +19,7 @@ concurrency:
 
 defaults:
   run:
-    shell: bash -leo pipefail {0}
+    shell: bash
     
 jobs:
   build-mf6:
@@ -30,6 +30,8 @@ jobs:
 
       - name: List gcc and gfortran paths and versions
         run: |
+          source /opt/rh/devtoolset-10/enable
+
           which gcc
           which gfortran
 
@@ -43,7 +45,15 @@ jobs:
         run: |
           ls -lh
 
-          ls -lh root/usr/bin/
+      - name: what's in the /opt/rh/devtoolset-10/root dir
+        working-directory: /opt/rh/devtoolset-10/root
+        run: |
+          ls -lh
+
+      - name: what's in the /opt/rh/devtoolset-10/root/bin dir
+        working-directory: /opt/rh/devtoolset-10/root/bin
+        run: |
+          ls -lh
 
       - name: get modflow6 repo
         run: |
@@ -53,7 +63,7 @@ jobs:
         working-directory: modflow6/make
         run: |
           sed -i 's/FFLAGS ?= -fbacktrace/FFLAGS ?= -static -fbacktrace/g' makedefaults
-          sed -i 's/LDFLAGS ?= -lc/LDFLAGS ?= -static -static-libgfortran -static-libgcc/' makedefaults
+          sed -i 's/LDFLAGS ?= -lc/LDFLAGS ?= -static -static-libgfortran -static-libgcc/ -lm' makedefaults
 
           cat makedefaults
 
