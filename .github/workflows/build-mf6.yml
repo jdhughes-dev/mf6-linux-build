@@ -39,6 +39,8 @@ jobs:
         run: |
           ls -lh
 
+          ls -lh root/usr/bin/
+
       - name: get modflow6 repo
         run: |
           git clone https://github.com/MODFLOW-ORG/modflow6.git modflow6
