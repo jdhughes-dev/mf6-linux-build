@@ -11,8 +11,8 @@ yum install -y gcc-gfortran
 yum install -y centos-release-scl
 yum install -y devtoolset-10
 
-echo 'source scl_source enable devtoolset-10' >> ~/.bashrc
-source ~/.bashrc
+echo 'source scl_source enable devtoolset-10' >> ~/.bash_profile
+source ~/.bash_profile
 
 gcc --version
 gcc-10 --version
