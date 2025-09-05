@@ -36,5 +36,5 @@ rm Python-3.13.7.tgz
 
 python3.13 -m ensurepip --default-pip
 
-pip3 install --user meson ninja
+pip install --user meson ninja
 meson --version
