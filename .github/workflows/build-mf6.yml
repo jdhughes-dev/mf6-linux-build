@@ -17,6 +17,10 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+defaults:
+  run:
+    shell: bash
+    
 jobs:
   build-mf6:
     name: build MODFLOW 6 in the container
@@ -34,6 +38,8 @@ jobs:
           gcc --version
           gfortran  --version
 
+          echo $LD_LIBRARY_PATH
+
       - name: what's in the /opt/rh/devtoolset-10 dir
         working-directory: /opt/rh/devtoolset-10
         run: |
@@ -49,7 +55,7 @@ jobs:
         working-directory: modflow6/make
         run: |
           sed -i 's/FFLAGS ?= -fbacktrace/FFLAGS ?= -static -fbacktrace/g' makedefaults
-          sed -i 's/LDFLAGS ?= -lc/LDFLAGS ?= -static -static-libgfortran -static-libgcc -static-libstdc++/' makedefaults
+          sed -i 's/LDFLAGS ?= -lc/LDFLAGS ?= -static -static-libgfortran -static-libgcc -static-libstdc++ -lc/' makedefaults
 
           cat makedefaults
 
@@ -71,6 +77,7 @@ jobs:
 
           alias gcc='/opt/rh/devtoolset-10/root/usr/bin/gcc'
           alias gfortran='/opt/rh/devtoolset-10/root/usr/bin/gfortran'
+          alias ld='/opt/rh/devtoolset-10/root/etc/alternatives/ld'
 
           export CC=gcc
           export FC=gfortran
