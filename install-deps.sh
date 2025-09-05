@@ -15,6 +15,13 @@ yum -y groupinstall "Development Tools"
 yum install -y openssl-devel bzip2-devel libffi-devel zlib-devel wget
 
 source /opt/rh/devtoolset-10/enable
+alias gcc='/opt/rh/devtoolset-10/root/usr/bin/gcc'
+alias cxx='/opt/rh/devtoolset-10/root/usr/bin/g++'
+alias gfortran='/opt/rh/devtoolset-10/root/usr/bin/gfortran'
+
+export CC=gcc
+export CXX=gxx
+export FC=gfortran
 
 wget https://www.python.org/ftp/python/3.13.7/Python-3.13.7.tgz
 tar xzf Python-3.13.7.tgz
@@ -23,7 +30,7 @@ cd Python-3.13.7
 make altinstall
 
 cd ..
-sudo rm /usr/src/Python-3.13.7.tgz
+rm /usr/src/Python-3.13.7.tgz
 python3.13 -V
 
 python3.13 -m ensurepip --default-pip
