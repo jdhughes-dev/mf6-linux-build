@@ -17,5 +17,5 @@ yum install -y python36-devel
 yum install -y python36-setuptools
 easy_install-3.6 pip
 
-pip3 install meson
+sudo pip3 install meson=1.7.1
 meson --version
