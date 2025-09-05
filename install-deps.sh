@@ -10,12 +10,16 @@ yum install -y git
 yum install -y gcc-gfortran
 yum install -y centos-release-scl
 yum install -y devtoolset-10
-yum install -y ninja-build
 
-yum install -y python38
-yum install -y python38-devel
-yum install -y python38-setuptools
-easy_install-3.8 pip
+wget https://www.python.org/ftp/python/3.13.7/Python-3.13.7.tgz
+tar xzf Python-3.13.7.tgz
+cd Python-3.13.7
+./configure --enable-optimizations
+make altinstall
 
-pip3 install --user meson==1.7.1
+cd ..
+sudo rm /usr/src/Python-3.13.7.tgz
+python3.13 -V
+
+pip3 install --user meson ninja
 meson --version
