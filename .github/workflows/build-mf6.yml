@@ -67,8 +67,11 @@ jobs:
           unset FFLAGS
           unset LDFLAGS
 
-          export CC="/opt/rh/devtoolset-10/root/usr/bin/gcc"
-          export FC="/opt/rh/devtoolset-10/root/usr/bin/gfortran"
+          alias gcc='/opt/rh/devtoolset-10/root/usr/bin/gcc'
+          alias gfortran='/opt/rh/devtoolset-10/root/usr/bin/gfortran'
+
+          export CC=gcc
+          export FC=gfortran
          
           make clean
 
