@@ -19,7 +19,7 @@ concurrency:
 
 defaults:
   run:
-    shell: bbash -leo pipefail {0}
+    shell: bash -leo pipefail {0}
     
 jobs:
   build-mf6:
