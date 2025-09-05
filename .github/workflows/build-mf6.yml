@@ -63,7 +63,7 @@ jobs:
         working-directory: modflow6/make
         run: |
           sed -i 's/FFLAGS ?= -fbacktrace/FFLAGS ?= -static -fbacktrace/g' makedefaults
-          sed -i 's/LDFLAGS ?= -lc/LDFLAGS ?= -static -static-libgfortran -static-libgcc/ -lm' makedefaults
+          sed -i 's/LDFLAGS ?= -lc/LDFLAGS ?= -static -static-libgfortran -static-libgcc -lm/' makedefaults
 
           cat makedefaults
 
