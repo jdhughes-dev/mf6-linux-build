@@ -3,15 +3,21 @@ name: docker-build
 on: 
   workflow_dispatch:
   push:
+    paths-ignore:
+        - 'README.md' 
+        - '.github/workflows/build-mf6.yml'
     paths:
       - 'Dockerfile'
       - 'install-deps.sh'
-      - 'github/workflows/build-docker-container.yml'
+      - '.github/workflows/build-docker-container.yml'
   pull_request:
+    paths-ignore:
+        - 'README.md' 
+        - '.github/workflows/build-mf6.yml'
     paths:
       - 'Dockerfile'
       - 'install-deps.sh'
-      - 'github/workflows/build-docker-container.yml'
+      - '.github/workflows/build-docker-container.yml'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
