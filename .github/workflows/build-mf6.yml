@@ -19,7 +19,7 @@ concurrency:
 
 defaults:
   run:
-    shell: bash
+    shell: bbash -leo pipefail {0}
     
 jobs:
   build-mf6:
@@ -53,7 +53,7 @@ jobs:
         working-directory: modflow6/make
         run: |
           sed -i 's/FFLAGS ?= -fbacktrace/FFLAGS ?= -static -fbacktrace/g' makedefaults
-          sed -i 's/LDFLAGS ?= -lc/LDFLAGS ?= -static -static-libgfortran -static-libgcc -static-libstdc++ -lc/' makedefaults
+          sed -i 's/LDFLAGS ?= -lc/LDFLAGS ?= -static -static-libgfortran -static-libgcc/' makedefaults
 
           cat makedefaults
 
