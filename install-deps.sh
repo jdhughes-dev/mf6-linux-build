@@ -12,10 +12,10 @@ yum install -y centos-release-scl
 yum install -y devtoolset-10
 yum install -y ninja-build
 
-yum install -y python311
-yum install -y python311-devel
-yum install -y python311-setuptools
-easy_install-3.11 pip
+yum install -y python310
+yum install -y python310-devel
+yum install -y python310-setuptools
+easy_install-3.10 pip
 
 pip3 install --user meson==1.7.1
 meson --version
