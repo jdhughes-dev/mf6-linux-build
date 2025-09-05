@@ -35,6 +35,8 @@ jobs:
 
       - name: build modflow6
         run: |
+          scl enable devtoolset-10 bash 
+          
           export CC="/usr/bin/gcc"
           export FC="/usr/bin/gfortran"
           cd modflow6/make
