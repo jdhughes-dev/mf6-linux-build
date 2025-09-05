@@ -35,15 +35,17 @@ jobs:
       - name: what's there
         run: |
           ls -lh
-          scl enable devtoolset-10 bash 
-          which gcc-10
-          which gfortran-10
-          gcc-10 --version
-          gfortran-10  --version
+          source /opt/rh/devtoolset-10/enable
+
+          which gcc
+          which gfortran
+
+          gcc --version
+          gfortran  --version
 
       - name: build modflow6
         run: |
-          scl enable devtoolset-10 bash 
+          source /opt/rh/devtoolset-10/enable
 
           export CC="/usr/bin/gcc"
           export FC="/usr/bin/gfortran"
