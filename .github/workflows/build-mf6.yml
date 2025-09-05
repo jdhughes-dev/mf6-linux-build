@@ -24,19 +24,23 @@ jobs:
         #   curl -L -o mf6.zip https://github.com/MODFLOW-ORG/modflow6/archive/refs/heads/develop.zip
         #   unzip mf6.zip
 
+      - name: what's in the
+        run: |
+          ls -lh /usr/bin/
+
       - name: what's there
         run: |
           ls -lh
           scl enable devtoolset-10 bash 
-          which gcc
-          which gfortran
-          gcc --version
-          gfortran --version
+          which gcc-10
+          which gfortran-10
+          gcc-10 --version
+          gfortran-10  --version
 
       - name: build modflow6
         run: |
           scl enable devtoolset-10 bash 
-          
+
           export CC="/usr/bin/gcc"
           export FC="/usr/bin/gfortran"
           cd modflow6/make
