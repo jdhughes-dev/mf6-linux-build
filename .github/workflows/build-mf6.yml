@@ -30,8 +30,6 @@ jobs:
 
       - name: List gcc and gfortran paths and versions
         run: |
-          source /opt/rh/devtoolset-10/enable
-
           which gcc
           which gfortran
 
