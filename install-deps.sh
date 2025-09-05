@@ -8,7 +8,7 @@ sed -i 's/^mirrorlist=http/#mirrorlist=http/g' /etc/yum.repos.d/CentOS-*.repo
 yum update -y 
 yum install -y git
 yum install -y centos-release-scl
-yum install -y devtoolset-9
-yum install -y gcc
-yum install -y gcc-gfortran
-
+yum install -y devtoolset-10
+scl enable devtoolset-10 bash 
+gcc --version
+gfortran --version

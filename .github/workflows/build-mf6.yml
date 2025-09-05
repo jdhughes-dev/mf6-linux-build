@@ -27,6 +27,7 @@ jobs:
       - name: what's there
         run: |
           ls -lh
+          scl enable devtoolset-10 bash 
           which gcc
           which gfortran
           gcc --version
