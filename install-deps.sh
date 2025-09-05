@@ -25,13 +25,14 @@ export FC=gfortran
 
 wget https://www.python.org/ftp/python/3.13.7/Python-3.13.7.tgz
 tar xzf Python-3.13.7.tgz
+
 cd Python-3.13.7
 ./configure --enable-optimizations
 make altinstall
-
-cd ..
-rm /usr/src/Python-3.13.7.tgz
 python3.13 -V
+
+cd ../
+rm Python-3.13.7.tgz
 
 python3.13 -m ensurepip --default-pip
 
