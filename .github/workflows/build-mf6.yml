@@ -34,13 +34,18 @@ jobs:
           gcc --version
           gfortran  --version
 
+      - name: what's in the /opt/rh/devtoolset-10 dir
+        working-directory: /opt/rh/devtoolset-10
+        run: |
+          ls -lh
+
       - name: get modflow6 repo
         run: |
           git clone https://github.com/MODFLOW-ORG/modflow6.git modflow6
 
       - name: update makefile
+        working-directory: modflow6/make
         run: |
-          cd modflow6/make
           sed -i 's/FFLAGS ?= -fbacktrace/FFLAGS ?= -static -fbacktrace/g' makedefaults
           sed -i 's/LDFLAGS ?= -lc/LDFLAGS ?= -static -static-libgfortran -static-libgcc -static-libstdc++ -lc/' makedefaults
 
@@ -50,12 +55,10 @@ jobs:
     #     run: |
     #       ls -lh /usr/bin/
 
-    #   - name: what's in the /opt/rh/devtoolset-10 dir
-    #     run: |
-    #       ls -lh /opt/rh/devtoolset-10
 
 
       - name: build modflow6
+        working-directory: modflow6/make
         run: |
           source /opt/rh/devtoolset-10/enable
 
@@ -66,9 +69,11 @@ jobs:
 
           export CC="/opt/rh/devtoolset-10/root/usr/bin/gcc"
           export FC="/opt/rh/devtoolset-10/root/usr/bin/gfortran"
-
-          cd modflow6/make
+         
           make clean
+
+          make settings
+
           make 
 
       - name: List build directory
