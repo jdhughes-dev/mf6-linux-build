@@ -16,11 +16,11 @@ yum install -y openssl-devel bzip2-devel libffi-devel zlib-devel wget
 
 source /opt/rh/devtoolset-10/enable
 alias gcc='/opt/rh/devtoolset-10/root/usr/bin/gcc'
-alias cxx='/opt/rh/devtoolset-10/root/usr/bin/g++'
+alias g++='/opt/rh/devtoolset-10/root/usr/bin/g++'
 alias gfortran='/opt/rh/devtoolset-10/root/usr/bin/gfortran'
 
 export CC=gcc
-export CXX=gxx
+export CXX=g++
 export FC=gfortran
 
 wget https://www.python.org/ftp/python/3.13.7/Python-3.13.7.tgz
