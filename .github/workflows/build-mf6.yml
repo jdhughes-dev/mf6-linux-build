@@ -47,8 +47,9 @@ jobs:
         run: |
           source /opt/rh/devtoolset-10/enable
 
-          export CC="/usr/bin/gcc"
-          export FC="/usr/bin/gfortran"
+          export CC="/opt/rh/devtoolset-10/root/usr/bin/gcc"
+          export FC="/opt/rh/devtoolset-10/root/usr/bin/gfortran"
+          
           cd modflow6/make
           make clean
           make 
