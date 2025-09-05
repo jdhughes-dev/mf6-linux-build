@@ -10,4 +10,7 @@ yum install -y git
 yum install -y gcc-gfortran
 yum install -y centos-release-scl
 yum install -y devtoolset-10
-yum install -y meson ninja-build
+yum install -y ninja-build
+
+pip3 install meson
+meson --version
