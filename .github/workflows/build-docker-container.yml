@@ -41,4 +41,4 @@ jobs:
         with:
           context: . # Build context (current directory)
           push: true # Push the image to the registry
-          tags: jdhughes99/gaia-hbb:latest # Image 
+          tags: jdhughes99/gaia-ubuntu:latest # Image 

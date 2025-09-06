@@ -1,8 +1,19 @@
-# Note: this example assumes Holy Build Box 3.0.
-# Specify the actual desired version here. You can see the list
-# of available versions in our Changelog:
-# https://github.com/FooBarWidget/holy-build-box/blob/master/Changelog.md
-FROM ghcr.io/phusion/holy-build-box/hbb-64:rel-3.0.5
-ADD install-deps.sh /install-deps.sh
-RUN bash /install-deps.sh && rm -f /install-deps.sh
+    # Use a base image (e.g., Ubuntu, Alpine, Debian)
+    FROM ubuntu:latest
 
+    # Set environment variables (optional)
+    ENV DEBIAN_FRONTEND=noninteractive
+
+    # Install Git and other software
+    RUN apt-get update && \
+        apt-get install -y git curl vim && \
+        apt-get install -y build-essential && \
+        apt-get install -y gfortran && \
+        apt-get install -y libgcc-dev && \
+        apt-get install -y libgfortran-dev && \
+        apt-get install -y libquadmath-dev && \
+        apt-get install -y meson ninja-build && \
+        rm -rf /var/lib/apt/lists/*
+
+    # Define the default command to run when a container starts (optional)
+    CMD ["bash"]
