@@ -1,4 +1,4 @@
-name: hbb-build
+name: ubuntu-build
 
 on: 
   schedule:
