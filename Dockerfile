@@ -5,8 +5,7 @@
     ENV DEBIAN_FRONTEND=noninteractive
 
     # Install Git and other software
-    RUN sudo add-apt-repository ppa:ubuntu-toolchain-r/test && \
-        apt-get update && \
+    RUN apt-get update && \
         apt-get install -y git curl nano && \
         apt-get install -y meson ninja-build && \
         apt-get install -y build-essential && \
