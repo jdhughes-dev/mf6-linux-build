@@ -8,11 +8,13 @@ on:
       - 'Dockerfile'
       - 'install-deps.sh'
       - '.github/workflows/build-docker-container.yml'
+      - '.github/workflows/build-mf6-meson.yml'
   pull_request:
     paths-ignore:
       - 'Dockerfile'
       - 'install-deps.sh'
       - '.github/workflows/build-docker-container.yml'
+      - '.github/workflows/build-mf6-meson.yml'
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true

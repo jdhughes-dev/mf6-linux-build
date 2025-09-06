@@ -1,0 +1,75 @@
+name: hbb-build
+
+on: 
+  schedule:
+    - cron: '0 8 * * *' # run at 8 AM UTC (12 am PST)
+  push:
+    paths-ignore:
+      - 'Dockerfile'
+      - 'install-deps.sh'
+      - '.github/workflows/build-docker-container.yml'
+      - '.github/workflows/build-mf6.yml'
+  pull_request:
+    paths-ignore:
+      - 'Dockerfile'
+      - 'install-deps.sh'
+      - '.github/workflows/build-docker-container.yml'
+      - '.github/workflows/build-mf6.yml'
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+    
+jobs:
+  build-mf6:
+    name: build MODFLOW 6 in the container
+    runs-on: ubuntu-latest
+    container: jdhughes99/gaia-ubuntu:latest # Specify the Docker image
+    steps:
+
+      - name: List gcc and gfortran paths and versions
+        run: |
+          which gcc
+          which gfortran
+
+          gcc --version
+          gfortran  --version
+
+          echo $LD_LIBRARY_PATH
+
+      - name: get modflow6 repo
+        run: |
+          git clone https://github.com/MODFLOW-ORG/modflow6.git modflow6
+
+      - name: update main meson.build file
+        working-directory: modflow6
+        run: |
+          sed -i 's/subdir("'"srcbmi"'"")/# subdir("'"srcbmi"'"")/g' meson.build
+
+          cat meson.build
+
+      - name: build modflow6
+        working-directory: modflow6
+        run: |
+          export CC=gcc
+          export FC=gfortran
+
+          meson setup builddir --prefix=$(pwd) --libdir=bin -Ddefault_library=static
+          meson install -C builddir
+          meson test --verbose --no-rebuild -C builddir
+
+
+      - name: List build directory
+        working-directory: modflow6/bin
+        run: |
+          ls -lh
+      
+      - name: Upload modflow6
+        uses: actions/upload-artifact@v4
+        with:
+          name: mf6-ubuntu-artifact
+          path: modflow6/bin/mf6
+          retention-days: 30 # Optional: specify how long to keep the artifact
