@@ -47,7 +47,7 @@ jobs:
       - name: update main meson.build file
         working-directory: modflow6
         run: |
-          sed -i 's/subdir("'"srcbmi"'"")/# subdir("'"srcbmi"'"")/g' meson.build
+          sed -i 's/subdir('"'"'srcbmi'"'"')/# subdir('"'"'srcbmi'"'"')/g' meson.build
 
           cat meson.build
 
