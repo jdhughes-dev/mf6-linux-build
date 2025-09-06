@@ -7,11 +7,10 @@
     # Install Git and other software
     RUN apt-get update && \
         apt-get install -y git curl nano && \
+        apt-get install -y meson ninja-build && \
         apt-get install -y build-essential && \
         apt-get install -y gfortran && \
         apt-get install -y libgfortran-dev && \
-        apt-get install -y libquadmath-dev && \
-        apt-get install -y meson ninja-build && \
         rm -rf /var/lib/apt/lists/*
 
     # Define the default command to run when a container starts (optional)
