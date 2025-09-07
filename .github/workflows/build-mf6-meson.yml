@@ -99,7 +99,7 @@ jobs:
       - name: Zip modflow6 
         working-directory: work/modflow6/bin
         run: |
-          export MF6_VERSION=$(cat ../version.txt)
+          echo "Zip version ${{ env.MF6_VERSION }} to asset file name: ${{ env.MF6_ZIPFILE }}"
           zip ${{ env.MF6_ZIPFILE }} mf6
 
       - name: Upload modflow6
