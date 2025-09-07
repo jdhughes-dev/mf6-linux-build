@@ -50,10 +50,17 @@ jobs:
         run: |
           git clone https://github.com/MODFLOW-ORG/modflow6.git modflow6
 
-      - name: get modflow6 repo
+      - name: get mf6-linux-build repo
         working-directory: work/
         run: |
           git clone https://github.com/jdhughes-dev/mf6-linux-build.git data
+
+      - name: what is in the work directory
+        working-directory: work/
+        run: |
+          ls -lh
+          ls -lh modflow6/
+          ls -lh data
 
       - name: update main meson.build file
         working-directory: work/
@@ -71,7 +78,7 @@ jobs:
           meson install -C builddir
           meson test --verbose --no-rebuild -C builddir
 
-      - name: List build directory
+      - name: List modflow6 build directory
         working-directory: work/modflow6/bin
         run: |
           ls -lh
