@@ -8,13 +8,11 @@ on:
       - 'Dockerfile'
       - 'install-deps.sh'
       - '.github/workflows/build-docker-container.yml'
-      - '.github/workflows/build-mf6.yml'
   pull_request:
     paths-ignore:
       - 'Dockerfile'
       - 'install-deps.sh'
       - '.github/workflows/build-docker-container.yml'
-      - '.github/workflows/build-mf6.yml'
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -90,10 +88,35 @@ jobs:
         run: |
           ldd bin/mf6
       
+      - name: Set dynamic variable
+        if: steps.modflow6Dependencies.outcome == 'failure'
+        working-directory: work/modflow6
+        run: |
+          echo "MF6_VERSION=$(cat version.txt)" >> $GITHUB_ENV
+          echo "MF6_ZIPFILE=${{ env.MF6_VERSION }}_linux.zip" >> $GITHUB_ENV
+          echo "Asset file name: ${{ env.MF6_ZIPFILE }}"
+
+      - name: Zip modflow6 
+        working-directory: work/modflow6/bin
+        run: |
+          export MF6_VERSION=$(cat ../version.txt)
+          zip ${{ env.MF6_ZIPFILE }} mf6
+
       - name: Upload modflow6
         uses: actions/upload-artifact@v4
-        if: steps.modflow6Dependencies.outcome == 'failure'
         with:
-          name: mf6-ubuntu-artifact
+          name: ${{ env.MF6_VERSION }}
           path: work/modflow6/bin/mf6
           retention-days: 30 # Optional: specify how long to keep the artifact
+
+      - name: Create or Update Release and Upload Artifact
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ env.MF6_VERSION }}
+          name: Release ${{ github.ref_name }}
+          body: |
+            Release notes for ${{ env.MF6_VERSION }}
+            - Latest static modflow6 development build
+          files: work/modflow6/bin/${{ env.MF6_ZIPFILE }} # Path to your generated artifact
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -5,13 +5,11 @@ on:
   push:
     paths-ignore:
         - 'README.md' 
-        - '.github/workflows/build-mf6.yml'
         - '.github/workflows/build-mf6-meson.yml'
         - 'meson/**'
   pull_request:
     paths-ignore:
         - 'README.md' 
-        - '.github/workflows/build-mf6.yml'
         - '.github/workflows/build-mf6-meson.yml'
         - 'meson/**'
 
