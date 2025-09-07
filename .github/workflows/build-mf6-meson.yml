@@ -1,0 +1,96 @@
+name: ubuntu-build
+
+on: 
+  schedule:
+    - cron: '0 8 * * *' # run at 8 AM UTC (12 am PST)
+  push:
+    paths-ignore:
+      - 'Dockerfile'
+      - 'install-deps.sh'
+      - '.github/workflows/build-docker-container.yml'
+      - '.github/workflows/build-mf6.yml'
+  pull_request:
+    paths-ignore:
+      - 'Dockerfile'
+      - 'install-deps.sh'
+      - '.github/workflows/build-docker-container.yml'
+      - '.github/workflows/build-mf6.yml'
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+    
+jobs:
+  build-mf6:
+    name: build MODFLOW 6 in the container
+    runs-on: ubuntu-latest
+    container: 
+      image: jdhughes99/gaia-ubuntu:latest # Specify the Docker image
+    
+    steps:
+
+      - name: List gcc and gfortran paths and versions
+        run: |
+          which gcc
+          which gfortran
+
+          gcc --version
+          gfortran  --version
+
+      - name: Make work directory
+        run: |
+          mkdir work
+          ls -lh work/
+
+      - name: get modflow6 repo
+        working-directory: work/
+        run: |
+          git clone https://github.com/MODFLOW-ORG/modflow6.git modflow6
+
+      - name: get mf6-linux-build repo
+        working-directory: work/
+        run: |
+          git clone https://github.com/jdhughes-dev/mf6-linux-build.git data
+
+      - name: what is in the work directory
+        working-directory: work/
+        run: |
+          ls -lh
+          ls -lh modflow6/
+          ls -lh data
+
+      - name: update main meson.build file
+        working-directory: work/
+        run: |
+          cp data/meson/meson.build modflow6/
+          cp data/meson/meson.options modflow6/
+
+      - name: build modflow6
+        working-directory: work/modflow6
+        run: |
+          export CC=gcc
+          export FC=gfortran
+
+          meson setup builddir --prefix=$(pwd) --libdir=bin -Dstatic_gfortran=true
+          meson install -C builddir
+          meson test --verbose --no-rebuild -C builddir
+
+      - name: List modflow6 build directory
+        working-directory: work/modflow6/bin
+        run: |
+          ls -lh
+
+      - name: list modflow6 dependencies
+        working-directory: work/modflow6
+        run: |
+          ldd bin/mf6
+      
+      - name: Upload modflow6
+        uses: actions/upload-artifact@v4
+        with:
+          name: mf6-ubuntu-artifact
+          path: work/modflow6/bin/mf6
+          retention-days: 30 # Optional: specify how long to keep the artifact

@@ -4,31 +4,108 @@ on:
   schedule:
     - cron: '0 8 * * *' # run at 8 AM UTC (12 am PST)
   push:
+    paths-ignore:
+      - 'Dockerfile'
+      - 'install-deps.sh'
+      - '.github/workflows/build-docker-container.yml'
+      - '.github/workflows/build-mf6-meson.yml'
   pull_request:
+    paths-ignore:
+      - 'Dockerfile'
+      - 'install-deps.sh'
+      - '.github/workflows/build-docker-container.yml'
+      - '.github/workflows/build-mf6-meson.yml'
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+defaults:
+  run:
+    shell: bash
+    
 jobs:
-  build:
+  build-mf6:
+    name: build MODFLOW 6 in the container
     runs-on: ubuntu-latest
-    container: phusion/holy-build-box-64:latest # Specify the Docker image
+    container: jdhughes99/gaia-hbb:latest # Specify the Docker image
     steps:
-      - name: Run a command inside the container
-        run: echo "Hello from inside the container!"
+
+      - name: List gcc and gfortran paths and versions
+        run: |
+          source /opt/rh/devtoolset-10/enable
+
+          which gcc
+          which gfortran
+
+          gcc --version
+          gfortran  --version
+
+          echo $LD_LIBRARY_PATH
+
+      - name: what's in the /opt/rh/devtoolset-10 dir
+        working-directory: /opt/rh/devtoolset-10
+        run: |
+          ls -lh
+
+      - name: what's in the /opt/rh/devtoolset-10/root dir
+        working-directory: /opt/rh/devtoolset-10/root
+        run: |
+          ls -lh
+
+      - name: what's in the /opt/rh/devtoolset-10/root/bin dir
+        working-directory: /opt/rh/devtoolset-10/root/bin
+        run: |
+          ls -lh
 
       - name: get modflow6 repo
         run: |
-          curl -L -o mf6.zip https://github.com/MODFLOW-ORG/modflow6/archive/refs/heads/develop.zip
-          unzip mf6.zip
+          git clone https://github.com/MODFLOW-ORG/modflow6.git modflow6
+
+      - name: update makefile
+        working-directory: modflow6/make
+        run: |
+          sed -i 's/FFLAGS ?= -fbacktrace/FFLAGS ?= -static -fbacktrace/g' makedefaults
+          sed -i 's/LDFLAGS ?= -lc/LDFLAGS ?= -static -static-libgfortran -static-libgcc -lm/' makedefaults
+
+          cat makedefaults
+
+    #   - name: what's in the /usr/bin/ dir
+    #     run: |
+    #       ls -lh /usr/bin/
+
+
 
       - name: build modflow6
+        working-directory: modflow6/make
         run: |
-          cd modflow6-develop/make
+          source /opt/rh/devtoolset-10/enable
+
+          unset CXXFLAGS
+          unset CFLAGS
+          unset FFLAGS
+          unset LDFLAGS
+
+          alias gcc='/opt/rh/devtoolset-10/root/usr/bin/gcc'
+          alias gfortran='/opt/rh/devtoolset-10/root/usr/bin/gfortran'
+          alias ld='/opt/rh/devtoolset-10/root/etc/alternatives/ld'
+
+          export CC=gcc
+          export FC=gfortran
+         
           make clean
+
+          make settings
+
           make 
 
-      - name: save modflow6
+      - name: List build directory
+        working-directory: modflow6/bin
         run: |
-          cd modflow6-develop/bin
           ls -lh
+      
+      - name: Upload modflow6
+        uses: actions/upload-artifact@v4
+        with:
+          name: hbb-mf6-artifact
+          path: modflow6/bin/mf6
+          retention-days: 30 # Optional: specify how long to keep the artifact
