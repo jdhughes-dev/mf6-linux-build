@@ -27,7 +27,11 @@ jobs:
   build-mf6:
     name: build MODFLOW 6 in the container
     runs-on: ubuntu-latest
-    container: jdhughes99/gaia-ubuntu:latest # Specify the Docker image
+    container: 
+      image: jdhughes99/gaia-ubuntu:latest # Specify the Docker image
+      volumes:
+        - ${{ github.workspace }}:/app/code      
+    
     steps:
 
       - name: List what is in the container
