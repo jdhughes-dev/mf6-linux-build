@@ -84,12 +84,15 @@ jobs:
           ls -lh
 
       - name: list modflow6 dependencies
+        id: modflow6Dependencies
         working-directory: work/modflow6
+        continue-on-error: true
         run: |
           ldd bin/mf6
       
       - name: Upload modflow6
         uses: actions/upload-artifact@v4
+        if: steps.modflow6Dependencies.outcome == 'failure'
         with:
           name: mf6-ubuntu-artifact
           path: work/modflow6/bin/mf6
