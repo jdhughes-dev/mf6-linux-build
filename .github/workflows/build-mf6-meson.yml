@@ -93,7 +93,7 @@ jobs:
         working-directory: work/modflow6
         run: |
           echo "MF6_VERSION=$(cat version.txt)" >> $GITHUB_ENV
-          echo "MF6_ZIPFILE=${{ env.MF6_VERSION }}_linux.zip" >> $GITHUB_ENV
+          echo "MF6_ZIPFILE=$(cat version.txt)_linux.zip" >> $GITHUB_ENV
           echo "Asset file name: ${{ env.MF6_ZIPFILE }}"
 
       - name: Zip modflow6 
@@ -109,14 +109,12 @@ jobs:
           path: work/modflow6/bin/mf6
           retention-days: 30 # Optional: specify how long to keep the artifact
 
-      - name: Create or Update Release and Upload Artifact
-        uses: softprops/action-gh-release@v1
+      - name: Create release
+        uses: ncipollo/release-action@v1
         with:
-          tag_name: ${{ env.MF6_VERSION }}
-          name: Release ${{ github.ref_name }}
-          body: |
-            Release notes for ${{ env.MF6_VERSION }}
-            - Latest static modflow6 development build
-          files: work/modflow6/bin/${{ env.MF6_ZIPFILE }} # Path to your generated artifact
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ env.MF6_VERSION }}
+          name: ${{ env.MF6_VERSION }} development build
+          draft: false
+          allowUpdates: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+          artifacts: "work/modflow6/bin/*.zip"
