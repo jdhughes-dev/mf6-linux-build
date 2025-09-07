@@ -12,7 +12,7 @@
         rm -rf /var/lib/apt/lists/* && \
         pip3 install meson ninja
 
-    ADD meson /meson/
+    COPY ./meson /app/meson
 
     # Define the default command to run when a container starts (optional)
     CMD ["bash"]

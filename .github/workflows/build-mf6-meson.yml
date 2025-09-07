@@ -30,12 +30,12 @@ jobs:
     container: 
       image: jdhughes99/gaia-ubuntu:latest # Specify the Docker image
       volumes:
-        - ${{ github.workspace }}:/app/code      
+        - ${{ github.workspace }}:/app      
     
     steps:
 
       - name: List what is in the container
-        working-directory: /app/code
+        working-directory: /app
         run: |
           ls -lh
 
@@ -48,16 +48,18 @@ jobs:
           gfortran  --version
 
       - name: get modflow6 repo
+        working-directory: /app
         run: |
           git clone https://github.com/MODFLOW-ORG/modflow6.git modflow6
 
       - name: update main meson.build file
+        working-directory: /app
         run: |
           cp meson/meson.build modflow6/
           cp meson/meson.options modflow6/
 
       - name: build modflow6
-        working-directory: modflow6
+        working-directory: app/modflow6
         run: |
           export CC=gcc
           export FC=gfortran
@@ -67,12 +69,12 @@ jobs:
           meson test --verbose --no-rebuild -C builddir
 
       - name: List build directory
-        working-directory: modflow6/bin
+        working-directory: app/modflow6/bin
         run: |
           ls -lh
 
       - name: list modflow6 dependencies
-        working-directory: modflow6
+        working-directory: app/modflow6
         run: |
           ldd bin/mf6
       
@@ -80,5 +82,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: mf6-ubuntu-artifact
-          path: modflow6/bin/mf6
+          path: app/modflow6/bin/mf6
           retention-days: 30 # Optional: specify how long to keep the artifact
