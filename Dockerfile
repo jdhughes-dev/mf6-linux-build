@@ -1,9 +1,6 @@
     # Use a base image (e.g., Ubuntu, Alpine, Debian)
     FROM python:3.11-slim-bookworm
 
-    RUN useradd -u 1001 -M github_user
-    USER 1001
-
     # Set environment variables (optional)
     ENV DEBIAN_FRONTEND=noninteractive
 
@@ -14,8 +11,6 @@
         apt-get install -y gfortran libgfortran-12-dev && \
         rm -rf /var/lib/apt/lists/* && \
         pip3 install meson ninja
-
-    COPY ./meson /app/meson
 
     # Define the default command to run when a container starts (optional)
     CMD ["bash"]
