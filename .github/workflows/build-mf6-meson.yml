@@ -30,6 +30,10 @@ jobs:
     container: jdhughes99/gaia-ubuntu:latest # Specify the Docker image
     steps:
 
+      - name: List what is in the container
+        run: |
+          ls -lh
+
       - name: List gcc and gfortran paths and versions
         run: |
           which gcc
@@ -37,8 +41,6 @@ jobs:
 
           gcc --version
           gfortran  --version
-
-          echo $LD_LIBRARY_PATH
 
       - name: get modflow6 repo
         run: |
