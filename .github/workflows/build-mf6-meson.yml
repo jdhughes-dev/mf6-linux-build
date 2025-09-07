@@ -35,6 +35,7 @@ jobs:
     steps:
 
       - name: List what is in the container
+        working-directory: /app/code
         run: |
           ls -lh
 
