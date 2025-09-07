@@ -43,19 +43,20 @@ jobs:
       - name: Make work directory
         run: |
           mkdir work
+          ls -lh work/
 
       - name: get modflow6 repo
-        working-directory: /work
+        working-directory: work/
         run: |
           git clone https://github.com/MODFLOW-ORG/modflow6.git modflow6
 
       - name: get modflow6 repo
-        working-directory: /work
+        working-directory: work/
         run: |
           git clone https://github.com/jdhughes-dev/mf6-linux-build.git data
 
       - name: update main meson.build file
-        working-directory: /work
+        working-directory: work/
         run: |
           cp data/meson/meson.build modflow6/
           cp data/meson/meson.options modflow6/
